@@ -3,7 +3,7 @@ import json
 
 
 class Codec(ABC):
-    def __init__(self,codec):
+    def __init__(self,codec, videocfg = 'code/codecs/JSON_files/video.JSON'):
         codec = codec.lower()
         with open('code/codecs/JSON_files/paths.JSON') as json_file:
             data = json.load(json_file)
@@ -15,7 +15,7 @@ class Codec(ABC):
             self.__txts_path = data[codec]['txt']
             self.__csvs_path = data[codec]['csv']
             self.__images_path = data[codec]['images']
-        with open('code/codecs/JSON_files/video.JSON') as json_video_file:
+        with open(videocfg) as json_video_file:
             data = json.load(json_video_file)
             self.__name = data['name']
             self.__vidpath = data['path']
@@ -54,7 +54,7 @@ class Codec(ABC):
         return self.__encoder
 
     def get_bitstream(self):
-        return self.__bitstream_path
+        return self.__bitstream_path +'/'+ self.__name
 
     def get_decoded(self):
         return self.__decoded_path
@@ -63,7 +63,7 @@ class Codec(ABC):
         return self.__txts_path
 
     def get_csvs(self):
-        return self.__csvs_path
+        return self.__csvs_path +'/'+ self.__name
 
     def get_images(self):
         return self.__images_path

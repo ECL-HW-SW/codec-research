@@ -3,11 +3,13 @@ from CodecComparator import CodecComparator
 
 qps = [22,27,32,37]
 
-teste = svt_codec()
+svt = svt_codec()
 for qp in qps:
-    teste.set_qp(qp)
-    teste.encode()
-    teste.add_to_csv()
+    svt.set_qp(qp)
+    svt.encode()
+    svt.add_to_csv()
+
+csv_bowing = svt.get_csvs
 
 comp = CodecComparator()
-print(comp.bdrate(teste.get_csvs(),teste.get_csvs()))
+print(comp.bdrate(svt.get_csvs(),svt.get_csvs()))
