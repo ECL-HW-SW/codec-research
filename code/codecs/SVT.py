@@ -38,7 +38,7 @@ class svt_codec(Codec):
         bitstream_path = bitstream_path.replace("~",str(p))
         if not(os.path.exists(bitstream_path)):
             os.mkdir(bitstream_path)
-        encoded_out = self.get_bitstream() + "/svtenc_" + self.get_videoname()
+        encoded_out = self.get_bitstream() + "/svtenc_" + self.get_videoname() + "_" + self.get_qp()
         outgen = self.get_txts()+"/"+self.get_videoname()+"_stat.txt"
         outtime = self.get_outtime()+"/"+self.get_videoname()+"_time.txt"
         cmdline = svtpath + ' --enable-stat-report 1  --stat-file ' + outgen  + ' ' + options_svte
