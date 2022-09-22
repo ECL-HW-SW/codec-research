@@ -48,21 +48,22 @@ class EVC(Codec):
 
         with open(f'{self.get_txts()}/{self.get_videoname()}.txt') as temp:
             text = temp.readlines()
-            name = text[2].split('/')[-1]
-            preset = text[5].split()[2]
+            name = self.get_videoname()
             width = text[6].split()[2]
             height = text[7].split()[2]
+            resolution = f'{width}x{height}'
             fps = text[8].split()[2]
+            QP= self.get_qp()
             PSNR_Y_fullvideo = text[-12].split()[3]
             PSNR_U_fullvideo = text[-11].split()[3]
             PSNR_V_fullvideo = text[-10].split()[3]
             Brate_fullvideo = text[-6].split()[2]
             total_frames = text[-5].split()[4]
-            geral_parameters = [name,preset,width,height,fps,PSNR_Y_fullvideo,PSNR_U_fullvideo,PSNR_V_fullvideo,Brate_fullvideo,total_frames]
+            geral_parameters = [name,resolution,fps,total_frames,QP,PSNR_Y_fullvideo,PSNR_U_fullvideo,PSNR_V_fullvideo,Brate_fullvideo]
         return sorted(parameters_lines),geral_parameters
 
     def add_to_csv(self,parameters):
-        info = ['name','preset','width','height','FPS', 'PSNR-Y','PSNR-U','PSNR-V','Bitratekbps','frames']
+        info = ['video','resolution','fps','number of frames','qp', 'PSNR-Y','PSNR-U','PSNR-V','bitrate']
         header=['POC', 'Ftype', 'QP', 'PSNR-Y','PSNR-U','PSNR-V','Bits','EncT(ms)','Bitratekbps']
         with open(f'{self.get_csvs()}/{self.get_videoname()}{self.get_qp()}parameters_frames.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
