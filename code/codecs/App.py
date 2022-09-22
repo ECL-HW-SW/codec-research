@@ -8,9 +8,9 @@ codec = EVC('evc')
 
 out = codec.encode()
 
-# a = codec.parse(f'{file[:-4]}.y4m','fast')
-
-# codec.add_to_csv(f'{file[:-4]}.evc',a)
+a = codec.parse()
+print(a)
+codec.add_to_csv(a)
 
 # a_frames = editor.get_frames(f'RAW_files/{file}',[0,10,20,30,40,50,60])
 # b_frames = editor.get_frames(f'decoded_files/{preset}_{file}',[0,10,20,30,40,50,60])

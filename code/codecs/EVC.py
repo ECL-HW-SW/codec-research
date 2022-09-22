@@ -26,7 +26,7 @@ class EVC(Codec):
         pattern2 = re.compile(r"\d+\.\d+\skbps")
         parameters_lines = []
 
-        with open(f'{self.get_txts_path()}/{self.get_videoname}.txt') as temp:
+        with open(f'{self.get_txts()}/{self.get_videoname()}.txt') as temp:
             text = temp.read()
             result = pattern.findall(text)
             result2 = pattern2.findall(text)
@@ -46,7 +46,7 @@ class EVC(Codec):
                 parameters_lines.append((parsed_data))
         temp.close()
 
-        with open(f'{self.get_txts_path()}/{preset}_{input}.txt') as temp:
+        with open(f'{self.get_txts()}/{self.get_videoname()}.txt') as temp:
             text = temp.readlines()
             name = text[2].split('/')[-1]
             preset = text[5].split()[2]
@@ -61,10 +61,10 @@ class EVC(Codec):
             geral_parameters = [name,preset,width,height,fps,PSNR_Y_fullvideo,PSNR_U_fullvideo,PSNR_V_fullvideo,Brate_fullvideo,total_frames]
         return sorted(parameters_lines),geral_parameters
 
-    def add_to_csv(self,input,parameters):
+    def add_to_csv(self,parameters):
         info = ['name','preset','width','height','FPS', 'PSNR-Y','PSNR-U','PSNR-V','Bitratekbps','frames']
         header=['POC', 'Ftype', 'QP', 'PSNR-Y','PSNR-U','PSNR-V','Bits','EncT(ms)','Bitratekbps']
-        with open(f'{self.get_csvs_path()}/{input}parameters_frames.csv', 'w', newline='') as csvfile:
+        with open(f'{self.get_csvs()}/{self.get_videoname()}{self.get_qp()}parameters_frames.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerow(info)
             writer.writerow(parameters[1])
