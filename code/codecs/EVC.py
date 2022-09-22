@@ -1,4 +1,4 @@
-from . import Codec
+from Codec import Codec
 import os
 import re
 import csv
@@ -7,36 +7,43 @@ class EVC(Codec):
     def __init__(self,codec):
         super().__init__(codec)
         
-    def encode(self,input,output,preset):
-        os.system(f'xeve_app -i {self.get_raw_path()}/{input} -v 3 --preset {preset} -o {self.get_bitstream_path()}/{output} > {self.get_txts_path()}/{preset}_{input}.txt')
+    def encode(self):
+        bitstream_path = self.get_bitstream()
+        if not(os.path.exists(bitstream_path)):
+            os.mkdir(bitstream_path)
+        part1 = f'xeve_app -i {self.get_videopath()} -v 3 -q {self.get_qp()} --preset fast '
+        part2 = f'-o {self.get_bitstream()}/{self.get_videoname()}{self.get_qp()}.evc'
+        part3 = f'> {self.get_txts()}/{self.get_videoname()}.txt'
+        print(part1+part2+part3)
+        os.system(part1+part2+part3)
 
     def decode(self,input,output,preset):
         os.system(f'xevd_app -i {self.get_bitstream_path()}/{input} -o {self.get_decoded_path()}/{preset}_{output}')
     
-    def parse(self,input,preset):
+    def parse(self):
         
         pattern = re.compile(r"\d+\s+\d{0,4}\s+\([IB]\)\s+\d+\s+\d+\.\d+\s+\d+\.\d+\s+\d+\.\d+\s+\d+\s+\d+")
         pattern2 = re.compile(r"\d+\.\d+\skbps")
         parameters_lines = []
 
-        with open(f'{self.get_txts_path()}/{preset}_{input}.txt') as temp:
+        with open(f'{self.get_txts_path()}/{self.get_videoname}.txt') as temp:
             text = temp.read()
             result = pattern.findall(text)
             result2 = pattern2.findall(text)
             for line in range(len(result)):
-                    original_data = result[line].split()
-                    original_data2 = result2[line-1].split()
-                    POC = int(original_data[0])
-                    Ftype = original_data[2][1]
-                    QP = original_data[3]
-                    PSNR_Y = original_data[4]
-                    PSNR_U = original_data[5]
-                    PSNR_V = original_data[6]
-                    Bits = original_data[7]
-                    Encode_time = original_data[8]
-                    Bitrate = original_data2[0]
-                    parsed_data = (POC,Ftype,QP,PSNR_U,PSNR_V,PSNR_Y,Bits,Encode_time,Bitrate)
-                    parameters_lines.append((parsed_data))
+                original_data = result[line].split()
+                original_data2 = result2[line-1].split()
+                POC = int(original_data[0])
+                Ftype = original_data[2][1]
+                QP = original_data[3]
+                PSNR_Y = original_data[4]
+                PSNR_U = original_data[5]
+                PSNR_V = original_data[6]
+                Bits = original_data[7]
+                Encode_time = original_data[8]
+                Bitrate = original_data2[0]
+                parsed_data = (POC,Ftype,QP,PSNR_U,PSNR_V,PSNR_Y,Bits,Encode_time,Bitrate)
+                parameters_lines.append((parsed_data))
         temp.close()
 
         with open(f'{self.get_txts_path()}/{preset}_{input}.txt') as temp:
@@ -68,4 +75,3 @@ class EVC(Codec):
 
     def gen_config(self):
         pass
-
