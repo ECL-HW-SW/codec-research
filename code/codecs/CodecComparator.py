@@ -48,7 +48,6 @@ class CodecComparator():
                     fullpath = csv_path + '/' + filecod
                 with open(fullpath, 'r') as csv_input:
                     csv_reader = csv.DictReader(csv_input, delimiter=',')
-                    print(csv_reader[1]['bitrate'])
                     for row in csv_reader:
                         bitrate.append(row["bitrate"])
                         psnr.append(row["psnr"])

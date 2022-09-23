@@ -17,13 +17,13 @@
     {
         "encoder" : "SvtAv1EncApp",
         "decoder" : "SvtAv1DecApp",
-        "bitstream" : "~/videocoding/videos",
-        "decoded" : "~/videocoding/bitstreams",
+        "bitstream" : "~/video-coding/research_files/SVT/bitstreams",
+        "decoded" : "~/video-coding/research_files/SVT/output",
         "options_encoder" : "--passes 2 --rc 0",
         "options_decoder" : "",
-        "txt" : "~/videocoding/svtenc_output",
-        "outtime" : "~/videocoding/svtenc_output",
-        "csv" : "~/videocoding/svtenc_output/csvs",
+        "txt" : "~/video-coding/research_files/SVT/output",
+        "outtime" : "~/video-coding/research_files/SVT/output",
+        "csv" : "~/video-coding/research_files/SVT/csvs",
         "images" : ""
     },
 "aom":
