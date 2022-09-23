@@ -39,15 +39,18 @@ class CodecComparator():
                     line_count += 1
         else:
             for filecod in os.listdir(csv_path):
-                if path.endswith("/"):
-                    fullpath = path + filecod
+                if csv_path.endswith("/"):
+                    fullpath = csv_path + filecod
                 else:
-                    fullpath = path + '/' + filecod
+                    fullpath = csv_path + '/' + filecod
                 with open(fullpath, 'r') as csv_input:
                     csv_reader = csv.DictReader(csv_input, delimiter=',')
                     for row in csv_reader:
                         bitrate.append(row["bitrate"])
                         psnr.append(row["psnr"])
+                        break
+        [print(x) for x in bitrate]
+        [print(x) for x in psnr]
         floats_bitrate = [float(x) for x in bitrate]
         floats_psnr = [float(x) for x in psnr]         
         return floats_bitrate, floats_psnr

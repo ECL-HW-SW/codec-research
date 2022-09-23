@@ -4,8 +4,8 @@ import re
 import csv
 
 class EVC(Codec):
-    def __init__(self,codec):
-        super().__init__(codec)
+    def __init__(self):
+        super().__init__('evc')
         
     def encode(self):
         bitstream_path = self.get_bitstream()
@@ -51,21 +51,23 @@ class EVC(Codec):
             name = self.get_videoname()
             width = text[6].split()[2]
             height = text[7].split()[2]
-            resolution = f'{width}x{height}'
+            resolution = self.get_resolution()
             fps = text[8].split()[2]
             QP= self.get_qp()
             PSNR_Y_fullvideo = text[-12].split()[3]
             PSNR_U_fullvideo = text[-11].split()[3]
             PSNR_V_fullvideo = text[-10].split()[3]
+            psnr = ((4*float(PSNR_Y_fullvideo))+float(PSNR_U_fullvideo)+float(PSNR_V_fullvideo))/6
+            psnr= float(f'{psnr:.4f}')
             Brate_fullvideo = text[-6].split()[2]
             total_frames = text[-5].split()[4]
-            geral_parameters = [name,resolution,fps,total_frames,QP,PSNR_Y_fullvideo,PSNR_U_fullvideo,PSNR_V_fullvideo,Brate_fullvideo]
+            geral_parameters = [name,resolution,fps,total_frames,QP,PSNR_Y_fullvideo,PSNR_U_fullvideo,PSNR_V_fullvideo,psnr,Brate_fullvideo]
         return sorted(parameters_lines),geral_parameters
 
     def add_to_csv(self,parameters):
-        info = ['video','resolution','fps','number of frames','qp', 'PSNR-Y','PSNR-U','PSNR-V','bitrate']
+        info = ['video','resolution','fps','number of frames','qp', 'PSNR-Y','PSNR-U','PSNR-V','psnr','bitrate']
         header=['POC', 'Ftype', 'QP', 'PSNR-Y','PSNR-U','PSNR-V','Bits','EncT(ms)','Bitratekbps']
-        with open(f'{self.get_csvs()}/{self.get_videoname()}{self.get_qp()}parameters_frames.csv', 'w', newline='') as csvfile:
+        with open(f'{self.get_csvs()}/{self.get_videoname()}_{self.get_qp()}.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerow(info)
             writer.writerow(parameters[1])
