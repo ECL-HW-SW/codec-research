@@ -71,7 +71,7 @@ class Codec(ABC):
         return self.__bitstream_path +'/'+ self.__name
 
     def get_decoded(self):
-        return self.__decoded_path
+        return self.__decoded_path+'/'+ self.__name
 
     def get_txts(self):
         return self.__txts_path
@@ -97,7 +97,7 @@ class Codec(ABC):
         pass
 
     @abstractmethod
-    def _parse(self):
+    def parse(self):
         pass
 
     @abstractmethod

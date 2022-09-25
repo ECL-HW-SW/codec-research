@@ -1,31 +1,34 @@
 {
 
-"raw": "/home/mangrich/code/lab/testes/raw",
+"raw": "/home/videocoding/videos",
 
 
 "qp": "22",
 
 "evc":
     {   
-        "encoder": "/home/filipi/evc/enc_app",
-        "bitstream": "/home/mangrich/code/lab/testes/bitstream",
-        "decoded": "/home/mangrich/code/lab/testes/decoded",
-        "txt": "/home/mangrich/code/lab/testes/txt",
-        "csv": "/home/mangrich/code/lab/testes/csv",
-        "images": "/home/mangrich/code/lab/testes/images"
+        "encoder": "/home/appfiles/xevevc/xeve/build/bin/xeveb_app",
+        "decoder" : "~/appfiles/xevevc/xevd/build/bin/xevd_app",
+        "options_encoder" : "",
+        "options_decoder" : "",
+        "bitstream": "~/videocoding/exevc_output/bitstreams",
+        "decoded": "/home/edulodi/videocoding/exevc_output/decoded",
+        "txt": "/home/edulodi/videocoding/exevc_output/encstats",
+        "csv": "/home/edulodi/videocoding/exevc_output/csvs",
+        "images": "/home/edulodi/videocoding/exevc_output/images"
     },
 
 "svt":
     {
         "encoder" : "SvtAv1EncApp",
         "decoder" : "SvtAv1DecApp",
-        "bitstream" : "/home/mangrich/code/lab/av1/bitstream",
-        "decoded" : "/home/mangrich/code/lab/av1/decoded",
+        "bitstream" : "/home/edulodi/videocoding/svtenc_output/bitstreams",
+        "decoded" : "/home/edulodi/videocoding/svtenc_output/decoded",
         "options_encoder" : "--passes 2 --rc 0",
         "options_decoder" : "",
-        "txt" : "/home/mangrich/code/lab/av1/txt",
-        "outtime" : "/home/mangrich/code/lab/av1/txt",
-        "csv" : "/home/mangrich/code/lab/av1/csv",
+        "txt" : "/home/edulodi/videocoding/svtenc_output/encstats",
+        "outtime" : "/home/edulodi/videocoding/svtenc_output/encstats",
+        "csv" : "/home/edulodi/videocoding/svtenc_output/csvs",
         "images" : ""
     },
 

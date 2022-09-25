@@ -1,4 +1,5 @@
 from Codec import Codec
+from pathlib import Path
 import os
 import re
 import csv
@@ -8,17 +9,26 @@ class EVC(Codec):
         super().__init__('evc')
         
     def encode(self):
+        
         bitstream_path = self.get_bitstream()
+        p = Path('~').expanduser()
+        bitstream_path = bitstream_path.replace("~",str(p))
         if not(os.path.exists(bitstream_path)):
             os.mkdir(bitstream_path)
-        part1 = f'xeve_app -i {self.get_videopath()} -v 3 -q {self.get_qp()} --preset fast '
-        part2 = f'-o {self.get_bitstream()}/{self.get_videoname()}{self.get_qp()}.evc'
+        part1 = f'{self.get_encoder()} -i {self.get_videopath()} -v 3 -q {self.get_qp()} --preset fast '
+        part2 = f'-o {self.get_bitstream()}/evcenc_{self.get_videoname()}_{self.get_qp()}.evc'
         part3 = f'> {self.get_txts()}/{self.get_videoname()}.txt'
         print(part1+part2+part3)
         os.system(part1+part2+part3)
 
-    def decode(self,input,output,preset):
-        os.system(f'xevd_app -i {self.get_bitstream_path()}/{input} -o {self.get_decoded_path()}/{preset}_{output}')
+    def decode(self):
+        bitstream_path = f'{self.get_bitstream()}/evcenc_{self.get_videoname()}_{self.get_qp()}.evc'
+        if not(os.path.exists(self.get_decoded())):
+            os.mkdir(self.get_decoded())
+        decoded_path =  f'{self.get_decoded()}/evcdec_{self.get_videoname()}_{self.get_qp()}.y4m'
+        cmdline = f'{self.get_decoder()} -i {bitstream_path} -o {decoded_path}'
+        print (cmdline)
+        os.system(cmdline)
     
 
     def parse(self):        
@@ -69,6 +79,8 @@ class EVC(Codec):
     def add_to_csv(self,parameters):
         info = ['video','resolution','fps','number of frames','qp', 'PSNR-Y','PSNR-U','PSNR-V','psnr','bitrate']
         header=['POC', 'Ftype', 'QP', 'PSNR-Y','PSNR-U','PSNR-V','Bits','EncT(ms)','Bitratekbps']
+        if not(os.path.exists(self.get_csvs())):
+            os.mkdir(self.get_csvs())
         with open(f'{self.get_csvs()}/{self.get_videoname()}_{self.get_qp()}.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerow(info)

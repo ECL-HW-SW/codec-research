@@ -36,9 +36,11 @@ class svt_codec(Codec):
 
     def decode(self):
         svtpath = self.get_decoder()
+        if not(os.path.exists(self.get_decoded())):
+            os.mkdir(self.get_decoded())
         options_svtd = self.get_options_decoder()
-        encoded_out = self.get_bitstream()+"/svtenc_"+self.get_videoname()
-        decoded_out = self.get_decoded()+"/svtdec_"+self.get_videoname()
+        encoded_out = self.get_bitstream() + "/svtenc_" + self.get_videoname() + "_" + self.get_qp()
+        decoded_out = self.get_decoded()+ "/svtdec_" + self.get_videoname() + "_" + self.get_qp()
         cmdline = (svtpath + ' ' + options_svtd + ' -i ' + encoded_out + ' -o ' + decoded_out)
         print(cmdline)     #@fix
         os.system(cmdline)    #@fix
